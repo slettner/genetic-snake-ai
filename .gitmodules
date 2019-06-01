@@ -1,0 +1,3 @@
+[submodule "external/genetic-algorithm"]
+	path = external/genetic-algorithm
+	url = https://github.com/BastiLettner/genetic-algorithm.git

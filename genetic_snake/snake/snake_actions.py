@@ -1,6 +1,7 @@
 # Implements the snake actions
 
 import abc
+import gin
 from ..util import Coordinate
 from .snake_environment import LANDSCAPE_OBJECTS
 
@@ -14,6 +15,7 @@ class AbstractSnakeAction(abc.ABC):
         raise NotImplementedError
 
 
+@gin.configurable
 class MoveLeft(AbstractSnakeAction):
 
     """ Make a movement to the left """
@@ -46,6 +48,7 @@ class MoveLeft(AbstractSnakeAction):
             snake.is_alive = False
 
 
+@gin.configurable
 class MoveRight(AbstractSnakeAction):
 
     """ Make a movement to the left """
@@ -78,6 +81,7 @@ class MoveRight(AbstractSnakeAction):
             snake.is_alive = False
 
 
+@gin.configurable
 class MoveUp(AbstractSnakeAction):
 
     """ Make a movement to the left """
@@ -110,6 +114,7 @@ class MoveUp(AbstractSnakeAction):
             snake.is_alive = False
 
 
+@gin.configurable
 class MoveDown(AbstractSnakeAction):
 
     """ Make a movement to the left """

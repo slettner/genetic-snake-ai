@@ -2,6 +2,7 @@
 
 import abc
 import h5py
+import gin
 import numpy as np
 from ..nn import softmax
 
@@ -31,6 +32,7 @@ class AbstractSnakePolicy(abc.ABC):
         raise NotImplementedError
 
 
+@gin.configurable
 class BinaryNeuralNetwork(AbstractSnakePolicy):
 
     """
@@ -38,7 +40,7 @@ class BinaryNeuralNetwork(AbstractSnakePolicy):
     It takes the state as input a probability distribution
     """
 
-    def __init__(self, hidden, state_size, action_size, activations, seed=0, restore=None):
+    def __init__(self, hidden, state_size, action_size, activations=np.tanh, seed=0, restore=None, initialize=True):
         """
         Construct a binary neural network to use as a snake policy
 
@@ -49,6 +51,7 @@ class BinaryNeuralNetwork(AbstractSnakePolicy):
             activations(func): The activation function to apply for each hidden layer
             seed(int): The seed for weights initialization
             restore(str): If restore is given the instance will restore weights from the file
+            initialize(bool): Initialize the weights if true
         """
         self.hidden = hidden
         self.state_size = state_size
@@ -63,7 +66,8 @@ class BinaryNeuralNetwork(AbstractSnakePolicy):
             self.restore(restore)
         else:
             self._build_network()
-            self._initialize_kernel()
+            if initialize:
+                self._initialize_kernel()
 
     def _build_network(self):
         """ Create the weights """
@@ -117,6 +121,57 @@ class BinaryNeuralNetwork(AbstractSnakePolicy):
             out = w_x + bias
             out_activated = self.activation(out)
         return softmax(out)
+
+    @property
+    def num_weights(self):
+        """ Gives the total number of weights back. Kernel and bias."""
+        total_number_of_weights = 0
+        for _, kernel in self.weights.items():
+            total_number_of_weights += kernel.shape[0] * kernel.shape[1]
+        for _, bias in self.bias.items():
+            total_number_of_weights += bias.shape[0]
+        return total_number_of_weights
+
+    def set_from_list(self, all_weights):
+        """
+        Set all weights from a flat list. Assumes ordering of layers from left to right.
+        Weights then bias.
+
+        Args:
+            all_weights(list): List of -1 or 1. Size matches the total number of weights.
+
+        Returns:
+
+        """
+        assert len(all_weights) == self.num_weights
+        num_layers = len(self.hidden) + 1  # plus one for the output layer.
+        ptr = 0
+        for i in range(num_layers):
+            # modify kernel
+            old_kernel = self.weights["layer{}".format(i+1)+"-kernel"]
+            num_kernel_weights = old_kernel.shape[0] * old_kernel.shape[1]
+            new_kernel = np.array(all_weights[ptr:ptr+num_kernel_weights]).reshape(old_kernel.shape)
+            self.weights["layer{}".format(i+1)+"-kernel"] = new_kernel
+
+            ptr += num_kernel_weights
+
+            # modify bias
+            old_bias = self.bias["layer{}".format(i+1)+"-bias"]
+            num_bias_weights = old_bias.shape[0]
+            new_bias = np.array(all_weights[ptr:ptr+num_bias_weights]).reshape(old_bias.shape)
+            self.bias["layer{}".format(i+1)+"-bias"] = new_bias
+
+            ptr += num_bias_weights
+
+    def get_weights_as_list(self):
+        """ get all weights as a 1-d list """
+        all_weights = []
+        for i in range(len(self.hidden)+1):
+            kernel = self.weights["layer{}".format(i+1)+"-kernel"]
+            bias = self.bias["layer{}".format(i+1)+"-bias"]
+            all_weights += kernel.flatten().tolist()
+            all_weights += bias.flatten().tolist()
+        return all_weights
 
     def decide(self, reason):
         """

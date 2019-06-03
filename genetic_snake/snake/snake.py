@@ -1,35 +1,38 @@
 # Implements the snake
 
+import gin
 import copy
 from genetic_snake.util import Coordinate
 from .snake_environment import Landscape, LANDSCAPE_OBJECTS
-from .snake_actions import MoveDown, MoveLeft, MoveRight, MoveUp
-from .snake_sensor import DistanceSensor
 
 
+@gin.configurable
 class Snake(object):
     """ Represents the Snake """
 
-    def __init__(self, landscape_size=(15, 15)):
+    def __init__(self,
+                 actions,
+                 sensors,
+                 policy,
+                 landscape_size=(15, 15),
+                 ):
         """
         Construct Snake.
 
         Args:
+            landscape_size(tuple): Size of the landscape
+            actions(list): List of AbstractSnakeAction
+            sensors(list): List of AbstractSnakeSensor
+            policy(AbstractSnakePolicy): The policy.
         """
         self.body = []  # a list of board pieces
         self.is_alive = True
         self.landscape = Landscape(size=landscape_size)
         self.give_birth()
-        self.actions = [
-            MoveLeft(),
-            MoveRight(),
-            MoveUp(),
-            MoveDown()
-        ]
 
-        self.sensors = [
-            DistanceSensor()
-        ]
+        self.actions = actions
+        self.sensors = sensors
+        self.policy = policy
 
     def give_birth(self):
         """ create a snake with size and coordinates (0, 0) (1, 0), (2, 0)"""
@@ -72,3 +75,9 @@ class Snake(object):
     def head(self):
         assert self.size > 0, "Snake has no head"
         return copy.copy(self.body[-1])
+
+    def move(self):
+        """ Make a move. This includes sensing the landscape, deciding on an action and executing it"""
+        perception = self.sense()
+        decision = self.policy.decide(reason=perception)
+        self.act(action=decision)

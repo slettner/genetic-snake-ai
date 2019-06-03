@@ -1,0 +1,105 @@
+# Gin Config
+
+# ----------- Macros ----------- #
+
+seed= 0
+problem_size = 468 # num weights
+population_size = 100
+num_generations = 100
+snake_dir = "/Users/sebastianlettner/Desktop/genetic-snake-ai/data"
+
+# ----------- Algorithm Components ---------- #
+
+##################
+# Initialization #
+##################
+RandomValueInitialization.problem_size = %problem_size
+RandomValueInitialization.size = %population_size
+RandomValueInitialization.values = [-1, 1]
+RandomValueInitialization.seed = %seed
+
+#############
+# Selection #
+#############
+GreedySelection.percentage_survivors = 1.0
+
+
+############
+# Mutation #
+############
+UniformMutation.low = 0
+UniformMutation.high = %problem_size
+UniformMutation.n = 1
+UniformMutation.seed = %seed
+UniformMutation.problem_size = %problem_size
+UniformMutation.probability = 0.7
+
+RandomSwapMutation.seed = %seed
+RandomSwapMutation.n_swaps = 1
+RandomSwapMutation.problem_size = %problem_size
+RandomSwapMutation.probability = 0.3
+
+
+#############
+# Crossover #
+#############
+SinglePointCrossedUniformCrossover.problem_size = %problem_size
+SinglePointCrossedUniformCrossover.seed = %seed
+
+PMCrossover.problem_size = %problem_size
+PMCrossover.seed = %seed
+
+UPMCrossover.seed = %seed
+UPMCrossover.problem_size = %problem_size
+UPMCrossover.probability = 0.8
+
+OrderedCrossover.seed = %seed
+OrderedCrossover.problem_size = %problem_size
+
+
+###########
+# Fitness #
+###########
+
+SnakeFitness.population_size = %population_size
+SnakeFitness.board_size = (15, 15)
+SnakeFitness.seed = %seed
+SnakeFitness.max_steps_per_apple = 500
+
+
+# ------------- Genetic Algorithm ------------ #
+
+# Algorithm
+GeneticAlgorithm.initial_population_strategy = @RandomValueInitialization()
+GeneticAlgorithm.cross_over_strategy = @SinglePointCrossedUniformCrossover()
+GeneticAlgorithm.mutation_strategy = @RandomSwapMutation()
+GeneticAlgorithm.selection_strategy = @GreedySelection()
+GeneticAlgorithm.fitness_strategy = @SnakeFitness()
+GeneticAlgorithm.num_generations = %num_generations
+GeneticAlgorithm.seed = %seed
+
+
+# -------------- Snake ------------- #
+
+genetic_snake.snake.snake.Snake.actions = [
+    @genetic_snake.snake.snake_actions.MoveLeft(),
+    @genetic_snake.snake.snake_actions.MoveRight(),
+    @genetic_snake.snake.snake_actions.MoveUp(),
+    @genetic_snake.snake.snake_actions.MoveDown()
+]
+
+Snake.sensors = [
+    @snake_sensor.DistanceSensor()
+]
+
+Snake.policy = @genetic_snake.snake.snake_brain.BinaryNeuralNetwork()
+
+BinaryNeuralNetwork.hidden = [16]
+BinaryNeuralNetwork.state_size = 24
+BinaryNeuralNetwork.action_size = 4
+BinaryNeuralNetwork.initialize = False  # set by GA
+
+
+
+
+

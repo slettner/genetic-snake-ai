@@ -1,7 +1,10 @@
 # The environment in which the snake lives
 
+import gin
 import logging
+import numpy as np
 from genetic_snake.util import Coordinate
+
 
 LANDSCAPE_OBJECTS = {
     "meadow": 0,
@@ -13,6 +16,7 @@ LANDSCAPE_OBJECTS = {
 }
 
 
+@gin.configurable
 class Landscape(object):
     """ The area in which the snake moves around """
     def __init__(self, size):
@@ -66,3 +70,40 @@ class Landscape(object):
         y_valid = 0 <= coordinates.y < self.size[1]
         return x_valid and y_valid
 
+    def __repr__(self):
+        """ Print LandScape """
+        world_array = np.zeros(self.size)
+        for i in range(self.size[0]):
+            for j in range(self.size[1]):
+                coord = Coordinate(i, j)
+                world_array[i, j] = self.world[coord]
+
+        return "\n" + np.array2string(world_array)
+
+
+@gin.configurable
+class AppleGenerator(object):
+
+    """ Generator for apples """
+
+    def __init__(self, landscape_size, seed=0):
+        """
+        Build Generator
+
+        Args:
+            landscape_size(tuple): Size of the landscape x, y
+            seed(int): Seed for the rng
+        """
+        assert len(landscape_size) == 2, "The landscape size should contain two values (x and y)"
+        self.max_x, self.max_y = landscape_size
+        self.rng = np.random.RandomState(seed=seed)
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        """ Returns Coordinates """
+        return Coordinate(
+            x=self.rng.randint(0, self.max_x),
+            y=self.rng.randint(0, self.max_y)
+        )

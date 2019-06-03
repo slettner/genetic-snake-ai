@@ -6,6 +6,7 @@ import numpy as np
 from genetic_snake.snake.snake import Snake
 from genetic_snake.util import Coordinate
 from genetic_snake.snake.snake_brain import BinaryNeuralNetwork
+from genetic_snake.snake import snake_sensor, snake_actions, snake_brain
 
 
 class TestSnake(unittest.TestCase):
@@ -14,7 +15,18 @@ class TestSnake(unittest.TestCase):
 
     def test_creation(self):
         """ Test that the snake is correctly place in the landscape. """
-        snake = Snake()
+        snake = Snake(
+            actions=[
+                snake_actions.MoveLeft(),
+                snake_actions.MoveRight(),
+                snake_actions.MoveUp(),
+                snake_actions.MoveDown()
+            ],
+            sensors=[
+                snake_sensor.DistanceSensor()
+            ],
+            policy=snake_brain.BinaryNeuralNetwork(action_size=4, state_size=24, hidden=tuple([10, 10]))
+        )
         self.assertEqual(snake.size, 3)
         self.assertTrue(snake.is_alive)
         self.assertEqual(snake.landscape.world[Coordinate(0, 0)], 1)
@@ -28,7 +40,18 @@ class TestSnakeAction(unittest.TestCase):
 
     def test_take_action_left(self):
         """ Test take action left. Snake should be dead afterwards """
-        snake = Snake()
+        snake = Snake(
+            actions=[
+                snake_actions.MoveLeft(),
+                snake_actions.MoveRight(),
+                snake_actions.MoveUp(),
+                snake_actions.MoveDown()
+            ],
+            sensors=[
+                snake_sensor.DistanceSensor()
+            ],
+            policy=snake_brain.BinaryNeuralNetwork(action_size=4, state_size=24, hidden=tuple([10, 10]))
+        )
         snake.act(0)  # move left
         self.assertEqual(snake.landscape.world[Coordinate(0, 0)], 0)
         self.assertEqual(snake.landscape.world[Coordinate(1, 0)], 1)
@@ -37,7 +60,18 @@ class TestSnakeAction(unittest.TestCase):
 
     def test_take_action_right(self):
         """ Test take action right. Snake should be alive afterwards """
-        snake = Snake()
+        snake = Snake(
+            actions=[
+                snake_actions.MoveLeft(),
+                snake_actions.MoveRight(),
+                snake_actions.MoveUp(),
+                snake_actions.MoveDown()
+            ],
+            sensors=[
+                snake_sensor.DistanceSensor()
+            ],
+            policy=snake_brain.BinaryNeuralNetwork(action_size=4, state_size=24, hidden=tuple([10, 10]))
+        )
         snake.act(1)  # move right
         self.assertEqual(snake.landscape.world[Coordinate(0, 0)], 0)
         self.assertEqual(snake.landscape.world[Coordinate(1, 0)], 1)
@@ -47,7 +81,18 @@ class TestSnakeAction(unittest.TestCase):
 
     def test_take_action_up(self):
         """ Test take action up. Snake should be dead afterwards"""
-        snake = Snake()
+        snake = Snake(
+            actions=[
+                snake_actions.MoveLeft(),
+                snake_actions.MoveRight(),
+                snake_actions.MoveUp(),
+                snake_actions.MoveDown()
+            ],
+            sensors=[
+                snake_sensor.DistanceSensor()
+            ],
+            policy=snake_brain.BinaryNeuralNetwork(action_size=4, state_size=24, hidden=tuple([10, 10])),
+        )
         snake.act(2)  # move up
         self.assertEqual(snake.landscape.world[Coordinate(0, 0)], 1)
         self.assertEqual(snake.landscape.world[Coordinate(1, 0)], 1)
@@ -56,7 +101,18 @@ class TestSnakeAction(unittest.TestCase):
 
     def test_take_action_down(self):
         """ Test take action up. Snake should be alive afterwards"""
-        snake = Snake()
+        snake = Snake(
+            actions=[
+                snake_actions.MoveLeft(),
+                snake_actions.MoveRight(),
+                snake_actions.MoveUp(),
+                snake_actions.MoveDown()
+            ],
+            sensors=[
+                snake_sensor.DistanceSensor()
+            ],
+            policy=snake_brain.BinaryNeuralNetwork(action_size=4, state_size=24, hidden=tuple([10, 10]))
+        )
         snake.act(3)  # move down
         self.assertEqual(snake.landscape.world[Coordinate(0, 0)], 0)
         self.assertEqual(snake.landscape.world[Coordinate(1, 0)], 1)
@@ -66,7 +122,18 @@ class TestSnakeAction(unittest.TestCase):
 
     def test_eat_apple(self):
         """ Test that the snake increases in size when eating the apple"""
-        snake = Snake()
+        snake = Snake(
+            actions=[
+                snake_actions.MoveLeft(),
+                snake_actions.MoveRight(),
+                snake_actions.MoveUp(),
+                snake_actions.MoveDown()
+            ],
+            sensors=[
+                snake_sensor.DistanceSensor()
+            ],
+            policy=snake_brain.BinaryNeuralNetwork(action_size=4, state_size=24, hidden=tuple([10, 10]))
+        )
         snake.landscape.plant_apple(Coordinate(3, 0))
         snake.act(1)  # move into the apple
         self.assertEqual(snake.landscape.world[Coordinate(0, 0)], 1)
@@ -82,7 +149,18 @@ class TestSnakeSensor(unittest.TestCase):
 
     def test_distance_sensor(self):
         """ Test the sensor measuring distance """
-        snake = Snake()
+        snake = Snake(
+            actions=[
+                snake_actions.MoveLeft(),
+                snake_actions.MoveRight(),
+                snake_actions.MoveUp(),
+                snake_actions.MoveDown()
+            ],
+            sensors=[
+                snake_sensor.DistanceSensor()
+            ],
+            policy=snake_brain.BinaryNeuralNetwork(action_size=4, state_size=24, hidden=tuple([10, 10]))
+        )
         snake.landscape.plant_apple(Coordinate(5, 0))
         perception = snake.sense()
         vision = perception["DistanceSensor"].tolist()
@@ -157,6 +235,45 @@ class TestBinaryNN(unittest.TestCase):
         np.testing.assert_array_equal(brain.bias["layer2-bias"], restored_brain.bias["layer2-bias"])
         np.testing.assert_array_equal(brain.bias["layer3-bias"], restored_brain.bias["layer3-bias"])
 
+    def test_set_from_list(self):
+        """ Test setting the weights from list """
+        brain = BinaryNeuralNetwork(
+            hidden=tuple([4]),
+            state_size=2,
+            action_size=2,
+            activations=np.tanh
+        )
+
+        new_weights = [-1, -1, -1, -1, -1, -1, -1, -1] + [1, 1, 1, 1] + [-1, -1, -1, -1, -1, -1, -1, -1] + [1, 1]
+        brain.set_from_list(new_weights)
+
+        layer1_kernel = np.array(new_weights[0:8]).reshape(4, 2)
+        layer1_bias = np.array(new_weights[8:12]).reshape(4)
+        layer2_kernel = np.array(new_weights[12:20]).reshape(2, 4)
+        layer2_bias = np.array(new_weights[20:22]).reshape(2)
+
+        np.testing.assert_array_equal(brain.weights["layer1-kernel"], layer1_kernel)
+        np.testing.assert_array_equal(brain.bias["layer1-bias"], layer1_bias)
+        np.testing.assert_array_equal(brain.weights["layer2-kernel"], layer2_kernel)
+        np.testing.assert_array_equal(brain.bias["layer2-bias"], layer2_bias)
+
+    def test_get_all_weights(self):
+        """ Test serializing all weights into a flat list"""
+        brain = BinaryNeuralNetwork(
+            hidden=tuple([4]),
+            state_size=2,
+            action_size=2,
+            activations=np.tanh
+        )
+
+        new_weights = [-1, -1, -1, -1, -1, -1, -1, -1] + [1, 1, 1, 1] + [-1, -1, -1, -1, -1, -1, -1, -1] + [1, 1]
+        brain.set_from_list(new_weights)
+        new_weights_from_brain = brain.get_weights_as_list()
+        self.assertEqual(
+            new_weights,
+            new_weights_from_brain
+        )
+
     def test_decide(self):
         """ Test forward pass """
 
@@ -169,7 +286,6 @@ class TestBinaryNN(unittest.TestCase):
         action = brain.decide(reason={"vision": np.arange(10)})
         self.assertTrue(isinstance(action, int))
         self.assertTrue(action in [0, 1, 2])
-
 
 
 if __name__ == '__main__':

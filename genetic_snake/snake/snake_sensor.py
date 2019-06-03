@@ -1,5 +1,6 @@
 # The snake sensor to perceive its environment.
 
+import gin
 import abc
 import numpy as np
 from ..util import Coordinate
@@ -12,6 +13,12 @@ class AbstractSnakeSensor(abc.ABC):
 
     @property
     @abc.abstractmethod
+    def size(self):
+        """ Size of the sensor output """
+        raise NotImplementedError
+
+    @property
+    @abc.abstractmethod
     def name(self):
         raise NotImplementedError
 
@@ -21,6 +28,7 @@ class AbstractSnakeSensor(abc.ABC):
         raise NotImplementedError
 
 
+@gin.configurable
 class DistanceSensor(AbstractSnakeSensor):
 
     """
@@ -51,6 +59,10 @@ class DistanceSensor(AbstractSnakeSensor):
     @property
     def name(self):
         return "DistanceSensor"
+
+    @property
+    def size(self):
+        return len(self.directions) * 3
 
     def sense(self, snake):
         """

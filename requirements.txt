@@ -1,0 +1,5 @@
+numpy
+gin-config
+pygame
+h5py
+pyzmq

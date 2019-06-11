@@ -54,7 +54,7 @@ class SnakeGame(object):
         self.logger.debug(self.snake.landscape)
         if self._render:
             self.render()
-            time.sleep(0.03)
+            time.sleep(0.05)
         while self.snake.is_alive and self._steps_since_last_apple < self._max_steps_per_apple:
 
             self.snake.move()
@@ -68,7 +68,7 @@ class SnakeGame(object):
             self.logger.debug(self.snake.landscape)
             if self._render:
                 self.render()
-                time.sleep(0.03)
+                time.sleep(0.05)
         self.logger.debug("Snake died after {} steps reaching a score of {}".format(self.num_steps, self.score))
         return self.score
 
@@ -109,45 +109,3 @@ class SnakeGame(object):
         }
 
         return display_surf, images
-
-
-
-
-class App:
-    windowWidth = 800
-    windowHeight = 600
-    player = 0
-    apple = 0
-
-    def __init__(self):
-        self._running = True
-        self._display_surf = None
-        self._image_surf = None
-        self._apple_surf = None
-        self.player = Player(10)
-        self.apple = Apple(5, 5)
-
-    def on_init(self):
-        pygame.init()
-        self._display_surf = pygame.display.set_mode((self.windowWidth, self.windowHeight), pygame.HWSURFACE)
-
-        self._running = True
-        self._image_surf = pygame.image.load("pygame.png").convert()
-        self._apple_surf = pygame.image.load("apple.png").convert()
-
-    def on_event(self, event):
-        if event.type == QUIT:
-            self._running = False
-
-    def on_loop(self):
-        self.player.update()
-        pass
-
-    def on_render(self):
-        self._display_surf.fill((0, 0, 0))
-        self.player.draw(self._display_surf, self._image_surf)
-        self.apple.draw(self._display_surf, self._apple_surf)
-        pygame.display.flip()
-
-    def on_cleanup(self):
-        pygame.quit()

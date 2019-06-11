@@ -80,6 +80,13 @@ class Landscape(object):
 
         return "\n" + np.array2string(world_array)
 
+    @property
+    def apple_location(self):
+        for loc, pixel in self.world.items():
+            if pixel == LANDSCAPE_OBJECTS["apple"]:
+                return loc
+        raise RuntimeError("The landscape has not apple")
+
 
 @gin.configurable
 class AppleGenerator(object):

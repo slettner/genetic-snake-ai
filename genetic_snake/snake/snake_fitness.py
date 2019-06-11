@@ -47,4 +47,4 @@ class SnakeFitness(AbstractFitnessStrategy):
                 max_steps_per_apple=self.max_steps_per_apple,
             )
             snake_game.snake.policy.set_from_list(chromosome.genetic_string)
-            chromosome.fitness = snake_game.play()
+            chromosome.fitness = snake_game.play() + 0.001 * snake_game.num_steps

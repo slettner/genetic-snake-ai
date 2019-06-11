@@ -4,7 +4,6 @@ import os
 import gin
 import sys
 import logging
-from functools import partial
 from genetic_algorithm.genetic_algorithm import GeneticAlgorithm
 from genetic_snake.snake.snake_fitness import SnakeFitness
 from genetic_snake.snake import snake_actions, snake_sensor, snake_brain

@@ -34,6 +34,8 @@ class Snake(object):
         self.sensors = sensors
         self.policy = policy
 
+        self.heading = Coordinate(1, 0)  # initially the snake moves east
+
     def give_birth(self):
         """ create a snake with size and coordinates (0, 0) (1, 0), (2, 0)"""
         for i in range(3):

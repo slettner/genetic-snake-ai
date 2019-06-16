@@ -3,7 +3,9 @@
 import os
 import gin
 import sys
+import time
 import logging
+import genetic_algorithm
 from genetic_algorithm.genetic_algorithm import GeneticAlgorithm
 from genetic_snake.snake.snake_fitness import SnakeFitness
 from genetic_snake.snake import snake_actions, snake_sensor, snake_brain
@@ -34,7 +36,18 @@ def main():
 
     gin.parse_config_file("evolution.gin")
     algorithm = GeneticAlgorithm()
+    start = time.time()
     algorithm.train(hooks=[snake_saver_hook])
+    print("Train Time: {}".format(time.time()-start))
+    # weird files created by zmq
+    try:
+        os.remove("frontend")
+        os.remove("backend")
+    except FileNotFoundError:
+        pass
+
+    if isinstance(algorithm.fitness_strategy, genetic_algorithm.fitness.MultiProcessingFitnessDecorator):
+        algorithm.fitness_strategy.terminate()
 
 
 if __name__ == '__main__':

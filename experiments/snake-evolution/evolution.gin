@@ -3,9 +3,9 @@
 # ----------- Macros ----------- #
 
 seed = 6
-problem_size = 270 # num weights
+problem_size = 179 # num weights
 population_size = 50
-num_generations = 101
+num_generations = 10
 snake_dir = "/Users/sebastianlettner/Desktop/genetic-snake-ai/data"
 
 # ----------- Algorithm Components ---------- #
@@ -82,6 +82,8 @@ SnakeFitness.board_size = (15, 15)
 SnakeFitness.seed = %seed
 SnakeFitness.max_steps_per_apple = 500
 
+genetic_algorithm.fitness.MultiProcessingFitnessDecorator.fitness = @SnakeFitness()
+
 
 # ------------- Genetic Algorithm ------------ #
 
@@ -109,13 +111,13 @@ Snake.sensors = [
 
 Snake.policy = @genetic_snake.snake.snake_brain.BinaryNeuralNetwork()
 
-BinaryNeuralNetwork.hidden = [9, 15]
+BinaryNeuralNetwork.hidden = [16]
 BinaryNeuralNetwork.state_size = 7
 BinaryNeuralNetwork.action_size = 3
 BinaryNeuralNetwork.initialize = False  # set by GA
 
 
-NeuralNetwork.hidden = [9, 15]
+NeuralNetwork.hidden = [16]
 NeuralNetwork.state_size = 7
 NeuralNetwork.action_size = 3
 NeuralNetwork.initialize = False  # set by GA

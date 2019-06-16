@@ -11,7 +11,7 @@ if __name__ == "__main__":
     logger = logging.getLogger("SnakeGame")
     # configure the command line streamer
     handler = logging.StreamHandler(sys.stdout)
-    handler.setLevel(logging.INFO)
+    handler.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     handler.setFormatter(formatter)
     logger.addHandler(handler)
@@ -24,13 +24,13 @@ if __name__ == "__main__":
         sensors=[
             snake_sensor.MinimalSensor()
         ],
-        policy=snake_brain.NeuralNetwork(action_size=3, state_size=7, hidden=tuple([9, 15]))
+        policy=snake_brain.NeuralNetwork(action_size=3, state_size=7, hidden=tuple([16]))
     )
     game = SnakeGame(
         snake=snake,
         v=logging.DEBUG,
         render=True
     )
-    game.snake.policy.restore(name="../data/remote/pop-2/data/snake160")
+    game.snake.policy.restore(name="../data/remote/pop-2/data/snake70")
     score = game.play()
     print("Snake reached score {}".format(score))

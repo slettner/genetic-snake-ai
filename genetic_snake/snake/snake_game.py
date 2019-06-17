@@ -90,7 +90,7 @@ class SnakeGame(object):
         pygame.init()
         window_width = 32 * self.snake.landscape.size[0]
         window_height = 32 * self.snake.landscape.size[1]
-        display_surf = pygame.display.set_mode((window_width, window_height), pygame.HWSURFACE)
+        display_surf = pygame.display.set_mode((window_width, window_height))
         path = "/Users/sebastianlettner/Desktop/genetic-snake-ai/images/"
         snake_surf = pygame.image.load(
             path + "snake.png"

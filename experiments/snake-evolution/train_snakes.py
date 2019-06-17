@@ -15,7 +15,9 @@ from genetic_snake.snake.snake import Snake
 @gin.configurable
 def snake_saver_hook(ga, population, generation):
     """ hook for saving the best snake every 10th iteration"""
-    if not generation % 10:
+    if not generation % 3:
+        save_path = os.path.join(gin.query_parameter("%snake_dir"), "snake{}".format(generation))
+        print("Saving Generation {} in {}".format(generation, save_path))
         best_snake_genetics = population.get_fittest_member().genetic_string
         snake = Snake()  # parameter are set by gin
         snake.policy.set_from_list(best_snake_genetics)

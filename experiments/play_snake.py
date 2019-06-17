@@ -2,6 +2,7 @@
 
 import logging
 import sys
+import genetic_snake
 from genetic_snake.snake.snake_game import SnakeGame
 from genetic_snake.snake import snake_actions, snake_sensor, snake_brain, snake
 
@@ -24,13 +25,18 @@ if __name__ == "__main__":
         sensors=[
             snake_sensor.MinimalSensor()
         ],
-        policy=snake_brain.NeuralNetwork(action_size=3, state_size=7, hidden=tuple([16]))
+        policy=snake_brain.NeuralNetwork(
+            action_size=3,
+            state_size=7,
+            hidden=tuple([16]),
+            activations=genetic_snake.nn.relu
+        )
     )
     game = SnakeGame(
         snake=snake,
         v=logging.DEBUG,
         render=True
     )
-    game.snake.policy.restore(name="../data/remote/pop-2/data/snake70")
+    game.snake.policy.restore(name="../data/remote/pop-2/data/snake290")
     score = game.play()
     print("Snake reached score {}".format(score))

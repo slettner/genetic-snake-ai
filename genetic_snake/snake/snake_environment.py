@@ -78,7 +78,7 @@ class Landscape(object):
                 coord = Coordinate(i, j)
                 world_array[i, j] = self.world[coord]
 
-        return "\n" + np.array2string(world_array)
+        return "\n" + np.array2string(np.transpose(world_array))
 
     @property
     def apple_location(self):

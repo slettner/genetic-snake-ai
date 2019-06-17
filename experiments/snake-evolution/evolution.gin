@@ -33,17 +33,6 @@ GreedySelection.percentage_survivors = 1.0
 ############
 # Mutation #
 ############
-UniformMutation.low = -1
-UniformMutation.high = 1
-UniformMutation.n = 20
-UniformMutation.seed = %seed
-UniformMutation.problem_size = %problem_size
-UniformMutation.probability = 0.3
-
-RandomSwapMutation.seed = %seed
-RandomSwapMutation.n_swaps = 1
-RandomSwapMutation.problem_size = %problem_size
-RandomSwapMutation.probability = 0.3
 
 WhiteNoiseMutation.seed = 42
 WhiteNoiseMutation.problem_size = %problem_size
@@ -56,18 +45,6 @@ WhiteNoiseMutation.probability = 0.3
 #############
 # Crossover #
 #############
-SinglePointCrossedUniformCrossover.problem_size = %problem_size
-SinglePointCrossedUniformCrossover.seed = %seed
-
-PMCrossover.problem_size = %problem_size
-PMCrossover.seed = %seed
-
-UPMCrossover.seed = %seed
-UPMCrossover.problem_size = %problem_size
-UPMCrossover.probability = 0.8
-
-OrderedCrossover.seed = %seed
-OrderedCrossover.problem_size = %problem_size
 
 RandomKPointCrossover.problem_size = %problem_size
 RandomKPointCrossover.seed = 0
@@ -109,7 +86,7 @@ Snake.sensors = [
     @snake_sensor.MinimalSensor()
 ]
 
-Snake.policy = @genetic_snake.snake.snake_brain.BinaryNeuralNetwork()
+Snake.policy = @genetic_snake.snake.snake_brain.NeuralNetwork()
 
 BinaryNeuralNetwork.hidden = [16]
 BinaryNeuralNetwork.state_size = 7

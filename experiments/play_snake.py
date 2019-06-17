@@ -37,6 +37,6 @@ if __name__ == "__main__":
         v=logging.DEBUG,
         render=True
     )
-    game.snake.policy.restore(name="../data/remote/pop-2/data/snake280")
+    game.snake.policy.restore(name="../sample_snake/snake280")
     score = game.play()
     print("Snake reached score {}".format(score))

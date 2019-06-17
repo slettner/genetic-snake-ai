@@ -85,6 +85,7 @@ class SnakeGame(object):
             y = loc.y
             self.display.blit(self.images[LANDSCAPE_OBJECTS[code]], (32*x, 32*y))
         pygame.display.flip()
+        pygame.event.get()
 
     def _init_display(self):
         pygame.init()

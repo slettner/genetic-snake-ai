@@ -2,7 +2,6 @@
 
 import gin
 import abc
-import math
 import numpy as np
 from ..util import Coordinate
 from .snake_environment import LANDSCAPE_OBJECTS

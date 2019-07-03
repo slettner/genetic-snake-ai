@@ -12,7 +12,7 @@ if __name__ == "__main__":
     logger = logging.getLogger("SnakeGame")
     # configure the command line streamer
     handler = logging.StreamHandler(sys.stdout)
-    handler.setLevel(logging.DEBUG)
+    handler.setLevel(logging.INFO)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     handler.setFormatter(formatter)
     logger.addHandler(handler)
@@ -37,6 +37,6 @@ if __name__ == "__main__":
         v=logging.DEBUG,
         render=True
     )
-    game.snake.policy.restore(name="../sample_snake/snake280")
+    game.snake.policy.restore(name="../data/remote/pop-2/data/snake280")
     score = game.play()
     print("Snake reached score {}".format(score))

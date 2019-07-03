@@ -68,8 +68,8 @@ class SnakeGame(object):
             self.logger.debug(self.snake.landscape)
             if self._render:
                 self.render()
-                time.sleep(0.05)
-        self.logger.debug("Snake died after {} steps reaching a score of {}".format(self.num_steps, self.score))
+                time.sleep(0.025)
+        self.logger.debug("Snake died after {} steps, reaching a score of {}".format(self.num_steps, self.score))
         return self.score
 
     def plant_next_apple(self):

@@ -94,7 +94,7 @@ BinaryNeuralNetwork.action_size = 3
 BinaryNeuralNetwork.initialize = False  # set by GA
 
 
-NeuralNetwork.hidden = [16]
+NeuralNetwork.hidden = [15, 15, 15]
 NeuralNetwork.state_size = 7
 NeuralNetwork.action_size = 3
 NeuralNetwork.initialize = False  # set by GA

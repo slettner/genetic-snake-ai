@@ -1,15 +1,15 @@
 # implements the snake game
 
-from pygame.locals import *
 import numpy as np
-from collections import namedtuple
-from random import randint
+import os
 import pygame
 import time
 import gin
 import logging
 from .snake import Snake
 from .snake_environment import AppleGenerator, LANDSCAPE_OBJECTS
+
+FILE_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 @gin.configurable
@@ -92,15 +92,15 @@ class SnakeGame(object):
         window_width = 32 * self.snake.landscape.size[0]
         window_height = 32 * self.snake.landscape.size[1]
         display_surf = pygame.display.set_mode((window_width, window_height))
-        path = "/Users/sebastianlettner/Desktop/genetic-snake-ai/images/"
+        path = os.path.join(FILE_PATH, "..", "..", "images")
         snake_surf = pygame.image.load(
-            path + "snake.png"
+            path + "/snake.png"
         ).convert()
         apple_surf = pygame.image.load(
-            path + "apple.png"
+            path + "/apple.png"
         ).convert()
         blank_surf = pygame.image.load(
-            path + "blank.png"
+            path + "/blank.png"
         ).convert()
 
         images = {

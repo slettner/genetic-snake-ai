@@ -11,17 +11,20 @@ from genetic_snake.snake.snake_fitness import SnakeFitness
 from genetic_snake.snake import snake_actions, snake_sensor, snake_brain
 from genetic_snake.snake.snake import Snake
 
+FILE_PATH = os.path.dirname(os.path.abspath(__file__))
+
 
 @gin.configurable
 def snake_saver_hook(ga, population, generation):
     """ hook for saving the best snake every 10th iteration"""
-    if not generation % 3:
-        save_path = os.path.join(gin.query_parameter("%snake_dir"), "snake{}".format(generation))
-        print("Saving Generation {} in {}".format(generation, save_path))
-        best_snake_genetics = population.get_fittest_member().genetic_string
-        snake = Snake()  # parameter are set by gin
-        snake.policy.set_from_list(best_snake_genetics)
-        snake.policy.save(name=os.path.join(gin.query_parameter("%snake_dir"), "snake{}".format(generation)))
+    if gin.query_parameter("%snake_dir") is not None:
+        if not generation % 3:
+            save_path = os.path.join(gin.query_parameter("%snake_dir"), "snake{}".format(generation))
+            print("Saving Generation {} in {}".format(generation, save_path))
+            best_snake_genetics = population.get_fittest_member().genetic_string
+            snake = Snake()  # parameter are set by gin
+            snake.policy.set_from_list(best_snake_genetics)
+            snake.policy.save(name=os.path.join(gin.query_parameter("%snake_dir"), "snake{}".format(generation)))
 
 
 def main():
@@ -36,7 +39,7 @@ def main():
     logger.addHandler(handler)
     logger_ga.addHandler(handler)
 
-    gin.parse_config_file("evolution.gin")
+    gin.parse_config_file(os.path.join(FILE_PATH, "evolution.gin"))
     algorithm = GeneticAlgorithm()
     start = time.time()
     algorithm.train(hooks=[snake_saver_hook])

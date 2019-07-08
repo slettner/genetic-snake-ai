@@ -3,10 +3,10 @@
 # ----------- Macros ----------- #
 
 seed = 6
-problem_size = 179 # num weights
+problem_size = 648 # num weights
 population_size = 50
 num_generations = 10
-snake_dir = "/Users/sebastianlettner/Desktop/genetic-snake-ai/data"
+snake_dir = None
 
 # ----------- Algorithm Components ---------- #
 

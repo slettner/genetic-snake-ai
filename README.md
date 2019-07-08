@@ -78,13 +78,36 @@ Using softmax activations on the output we select the action with highest probab
 
 
 ## Results
+[![](http://img.youtube.com/vi/nLp6u8bRUaA/0.jpg)](http://www.youtube.com/watch?v=nLp6u8bRUaA "Snake AI")
 
+The video shows a snake reaching a score above 40 apple. 
+In order to run your own snake install the requirements
+```
+>> pip install -r requirements.txt
+>> pip install .
+>> pip install external/genetic-alogirhtm/src
+```
+To run the training script, execute
+```
+>> python3 experiments/snake-evolution/train_snakes.py
+```
+
+The gin configuration framework is used to set all parameters. In the folder 'experiments/snake-evolution' is
+a file called 'evolution.gin' which configures the training. 
+If you want to save snakes change the 'snake_dir' from None to your directory.
+
+
+## Docker
+
+The code dockerized and can be build in 'docker/' by executing
+```
+>> bash make.sh
+```
 
 
 ## Conclusion 
 Although the genetic algorithm is less prone to get stuck in a local optimum
-the scalability is questionable as the search space explodes for large network architecture. 
- 
+the scalability is 'questionable' as the search space explodes for large network architecture. 
+The GA was not able to train the binary neural network to produce snake with acceptable performance. 
+Further hyper-parameter tuning might help thought. 
 
-
-## References

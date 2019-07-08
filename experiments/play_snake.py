@@ -2,10 +2,12 @@
 
 import logging
 import sys
+import os
 import genetic_snake
 from genetic_snake.snake.snake_game import SnakeGame
 from genetic_snake.snake import snake_actions, snake_sensor, snake_brain, snake
 
+FILE_PATH = os.path.dirname(os.path.abspath(__file__))
 
 if __name__ == "__main__":
 
@@ -37,6 +39,6 @@ if __name__ == "__main__":
         v=logging.DEBUG,
         render=True
     )
-    game.snake.policy.restore(name="../data/remote/pop-2/data/snake280")
+    game.snake.policy.restore(name=os.path.join(FILE_PATH, "..", "sample_snake", "snake280"))
     score = game.play()
     print("Snake reached score {}".format(score))

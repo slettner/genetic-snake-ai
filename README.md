@@ -5,9 +5,9 @@ neural network. The goal is, to learn playing the game of snake.
 In addition, I tried using only binary weights for the neural network. 
 The GA is able to teach the snakes decent strategies achieving scores 
 up 50 apples on a 15x15 field in about 2 hours of searching.
-I am not the first who did this, there are several other successful snakes trained by a genetic algorithm
+I want to mention, that I am not the first who did this, there are several other successful snakes trained by a genetic algorithm
 [1](https://becominghuman.ai/designing-ai-solving-snake-with-evolution-f3dd6a9da867),
-[2](https://theailearner.com/2018/11/09/snake-game-with-genetic-algorithm/) and I got most of my ideas from there.
+[2](https://theailearner.com/2018/11/09/snake-game-with-genetic-algorithm/) and I got most of the ideas from there.
 
 
 ## Genetic Algorithm 

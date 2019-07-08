@@ -78,7 +78,8 @@ Using softmax activations on the output we select the action with highest probab
 
 
 ## Results
-[![](http://img.youtube.com/vi/nLp6u8bRUaA/0.jpg)](http://www.youtube.com/watch?v=nLp6u8bRUaA "Snake AI")
+
+![](images/snake.gif)
 
 The video shows a snake reaching a score above 40 apple. 
 In order to run your own snake install the requirements

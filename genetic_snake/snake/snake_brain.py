@@ -170,6 +170,30 @@ class NeuralNetwork(AbstractSnakePolicy):
             all_weights += bias.flatten().tolist()
         return all_weights
 
+    def get_weight_as_arrays(self):
+        """ Return a list of weight arrays w1, b1, w2, b2, ... """
+        all_weights = []
+        for i in range(len(self.hidden) + 1):
+            kernel = self.weights["layer{}".format(i + 1) + "-kernel"]
+            bias = self.bias["layer{}".format(i + 1) + "-bias"]
+            all_weights.append(kernel)
+            all_weights.append(bias)
+        return all_weights
+
+    def set_from_arrays(self, weights):
+        """
+        Set the weights from a list of arrays
+
+        Args:
+            weights(list): List of arrays: w1, b1, w2, b2, ...
+
+        Returns:
+
+        """
+        for i, (w, b) in enumerate(zip(weights[0::2], weights[1::2])):
+            self.weights["layer{}".format(i + 1) + "-kernel"] = w
+            self.bias["layer{}".format(i + 1) + "-bias"] = b
+
     def decide(self, reason):
         """
         Make a forward pass through the network

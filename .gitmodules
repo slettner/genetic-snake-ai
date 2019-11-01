@@ -1,3 +1,6 @@
 [submodule "external/genetic-algorithm"]
 	path = external/genetic-algorithm
 	url = https://github.com/BastiLettner/genetic-algorithm.git
+[submodule "external/evostra"]
+	path = external/evostra
+	url = https://github.com/alirezamika/evostra.git

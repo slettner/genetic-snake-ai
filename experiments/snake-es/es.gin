@@ -1,0 +1,23 @@
+# Gin Config
+
+save = "/Users/laytneir/Documents/git-repos/genetic-snake-ai/experiments/snake-es"
+
+# -------------- Snake ------------- #
+
+genetic_snake.snake.snake.Snake.actions = [
+    @genetic_snake.snake.snake_actions.MoveLeft(),
+    @genetic_snake.snake.snake_actions.MoveRight(),
+    @genetic_snake.snake.snake_actions.MoveStraight(),
+]
+
+genetic_snake.snake.snake.Snake.sensors = [
+    @snake_sensor.MinimalSensor()
+]
+
+genetic_snake.snake.snake.Snake.policy = @genetic_snake.snake.snake_brain.NeuralNetwork()
+
+NeuralNetwork.hidden = [15, 5]
+NeuralNetwork.state_size = 7
+NeuralNetwork.action_size = 3
+NeuralNetwork.initialize = True
+NeuralNetwork.activations = @genetic_snake.nn.relu

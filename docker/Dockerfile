@@ -14,7 +14,9 @@ COPY setup.py genetic-snake-ai/
 COPY external genetic-snake-ai/external/
 
 
+
 RUN pip3 install --upgrade pip \
 && pip3 install genetic-snake-ai/external/genetic-algorithm/src \
 && pip3 install genetic-snake-ai/ \
-&& pip3 install gin-config numpy pygame h5py pyzmq\
+&& pip3 install gin-config numpy pygame h5py pyzmq \
+&& pip3 install genetic-snake-ai/external/evostra/

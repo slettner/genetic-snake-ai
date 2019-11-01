@@ -30,7 +30,7 @@ if __name__ == "__main__":
         policy=snake_brain.NeuralNetwork(
             action_size=3,
             state_size=7,
-            hidden=tuple([16]),
+            hidden=tuple([15, 15, 15]),
             activations=genetic_snake.nn.relu
         )
     )
@@ -39,6 +39,6 @@ if __name__ == "__main__":
         v=logging.DEBUG,
         render=True
     )
-    game.snake.policy.restore(name=os.path.join(FILE_PATH, "..", "sample_snake", "snake280"))
+    game.snake.policy.restore(name=os.path.join(FILE_PATH, "..", "sample_snake", "snake-es"))
     score = game.play()
     print("Snake reached score {}".format(score))

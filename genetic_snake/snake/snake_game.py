@@ -54,7 +54,7 @@ class SnakeGame(object):
         self.logger.debug(self.snake.landscape)
         if self._render:
             self.render()
-            time.sleep(0.05)
+            time.sleep(0.02)
         while self.snake.is_alive and self._steps_since_last_apple < self._max_steps_per_apple:
 
             self.snake.move()
@@ -68,7 +68,7 @@ class SnakeGame(object):
             self.logger.debug(self.snake.landscape)
             if self._render:
                 self.render()
-                time.sleep(0.025)
+                time.sleep(0.01)
         self.logger.debug("Snake died after {} steps, reaching a score of {}".format(self.num_steps, self.score))
         return self.score
 

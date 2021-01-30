@@ -100,7 +100,7 @@ If you want to save snakes change the 'snake_dir' from None to your directory.
 
 ## Docker
 
-The code dockerized and can be build in 'docker/' by executing
+The code is dockerized and can be build in 'docker/' by executing
 ```
 >> bash make.sh
 ```
@@ -109,6 +109,6 @@ The code dockerized and can be build in 'docker/' by executing
 ## Conclusion 
 Although the genetic algorithm is less prone to get stuck in a local optimum
 the scalability is 'questionable' as the search space explodes for large network architecture. 
-The GA was not able to train the binary neural network to produce snake with acceptable performance. 
-Further hyper-parameter tuning might help thought. 
+The GA was not able to train the binary neural network to produce snakes with acceptable performance. 
+Further hyper-parameter tuning might help though. 
 
